@@ -40,12 +40,12 @@
 #include "dynamic_timeout.h"
 #include "net_channel_factory.h"
 #include "mars/stn/stn_manager.h"
-#include "mars/config/config_mananger.h"
+#include "mars/app/app_manager.h"
 #include "config.h"
 
 using namespace mars::stn;
 using namespace mars::comm;
-using namespace mars::cfg;
+using namespace mars::app;
 
 #define AYNC_HANDLER asyncreg_.Get()
 #define RETURN_LONKLINK_SYNC2ASYNC_FUNC(func) RETURN_SYNC2ASYNC_FUNC(func, )
@@ -261,8 +261,13 @@ void LongLinkTaskManager::__RunLoop() {
     if (lst_cmd_.empty()) {
 #ifdef ANDROID
         /*cancel the last wakeuplock*/
-        wakeup_lock_->Lock(context_->GetManager<ConfigManager>()->GetConfig<int>(kKeyLongLinkWakeupLockEmptyCMD,kLongLinkWakeupLockEmptyCMD));
-        //wakeup_lock_->Lock(kLongLinkWakeupLockEmptyCMD);
+        if (context_->GetManager<AppManager>()) {
+            wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockEmptyCMD,
+                                                                                  kLongLinkWakeupLockEmptyCMD));
+        } else {
+            xinfo2(TSF "appmanager no exist.");
+            wakeup_lock_->Lock(kLongLinkWakeupLockEmptyCMD);
+        }
 #endif
         return;
     }
@@ -272,8 +277,13 @@ void LongLinkTaskManager::__RunLoop() {
 
     if (!lst_cmd_.empty()) {
 #ifdef ANDROID
-        wakeup_lock_->Lock(context_->GetManager<ConfigManager>()->GetConfig<int>(kKeyLongLinkWakeupLockRunCMD,kLongLinkWakeupLockRunCMD));
-        //wakeup_lock_->Lock(kLongLinkWakeupLockRunCMD);
+        if (context_->GetManager<AppManager>()) {
+            wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockRunCMD,
+                                                                                  kLongLinkWakeupLockRunCMD));
+        } else {
+            xinfo2(TSF "appmanager no exist.");
+            wakeup_lock_->Lock(kLongLinkWakeupLockRunCMD);
+        }
 #endif
       MessageQueue::FasterMessage(asyncreg_.Get(),
                                   MessageQueue::Message((MessageQueue::MessageTitle_t)this, boost::bind(&LongLinkTaskManager::__RunLoop, this), "LongLinkTaskManager::__RunLoop"),
@@ -281,8 +291,13 @@ void LongLinkTaskManager::__RunLoop() {
     } else {
 #ifdef ANDROID
         /*cancel the last wakeuplock*/
-        wakeup_lock_->Lock(context_->GetManager<ConfigManager>()->GetConfig<int>(kKeyLongLinkWakeupLockEmptyCMD,kLongLinkWakeupLockEmptyCMD));
-        //wakeup_lock_->Lock(kLongLinkWakeupLockEmptyCMD);
+        if (context_->GetManager<AppManager>()) {
+            wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockEmptyCMD,
+                                                                                  kLongLinkWakeupLockEmptyCMD));
+        } else {
+            xinfo2(TSF "appmanager no exist.");
+            wakeup_lock_->Lock(kLongLinkWakeupLockEmptyCMD);
+        }
 #endif
     }
 }

@@ -106,7 +106,7 @@ const static unsigned int kLonglinkConnMax = 3;
 const static unsigned int kShortlinkConnTimeout = 10 * 1000;
 const static unsigned int kShortlinkConnInterval = 2.5 * 1000;
 
-#ifdef ANDROID
+//#ifdef ANDROID
 const static std::string kKeyShortLinkWakeupLockEmptyCMD = "ShortLinkEmptyCMD";
 const static unsigned int kShortLinkWakeupLockEmptyCMD = 500;
 
@@ -136,6 +136,6 @@ const static unsigned int kLongLinkWakeupLockNoopResp = 500;
 
 const static std::string kKeyLongLinkWakeupLockNoopReq = "LongLinkNoopReq";
 const static unsigned int kLongLinkWakeupLockNoopReq = 8 * 1000;
-#endif
+//#endif
 
 #endif /* stn_config_h */

@@ -6,6 +6,9 @@
 #define MMNET_APP_MANAGER_H
 
 #include <memory>
+#include <typeindex>
+#include <unordered_map>
+#include "mars/boost/any.hpp"
 
 #include "mars/app/app.h"
 #include "mars/boot/base_manager.h"
@@ -15,6 +18,7 @@
 #include "mars/comm/thread/mutex.h"
 #include "mars/comm/thread/thread.h"
 #include "mars/comm/time_utils.h"
+#include "mars/comm/alarm.h"
 
 namespace mars {
 namespace app {
@@ -44,6 +48,41 @@ class AppManager : public mars::boot::BaseManager {
     void ClearProxyInfo();
     //    #endif
 
+//    template <typename T>
+//    T GetConfig(const std::string& key, T default_value) ;
+//
+//    template <typename T>
+//    void SetConfig(const std::string& key, T value);
+
+    template <typename T>
+    T GetConfig(const std::string& key, T default_value) {
+        xinfo2(TSF "AppConfig GetConfig key:%_, default value:%_", key, default_value);
+        auto it = _config.find(key);
+        if (it == _config.end() || _types.at(key) != typeid(T).name()) {
+            xinfo2(TSF"AppConfig GetConfig return default value. ");
+            return default_value;
+        }
+        return boost::any_cast<T>(it->second);
+    }
+
+    template <typename T>
+    void SetConfig(const std::string& key, T value) {
+        xinfo2(TSF "AppConfig SetConfig key:%_, value:%_", key, value);
+        _config[key] = value;
+        _types[key] = typeid(T).name();
+#ifdef ANDROID
+        if (key == kKeyAlarmStartWakeupLook) {
+            if (std::is_convertible<T, int>::value) {
+                comm::Alarm::SetStartAlarmWakeLock(static_cast<int>(value));
+            }
+        } else if (key == kKeyAlarmOnWakeupLook) {
+            if (std::is_convertible<T, int>::value) {
+                comm::Alarm::SetOnAlarmWakeLock(static_cast<int>(value));
+            }
+        }
+#endif
+    }
+
  private:
     Callback* callback_;
     mars::comm::ProxyInfo proxy_info_;
@@ -52,6 +91,10 @@ class AppManager : public mars::boot::BaseManager {
     mars::comm::Thread slproxythread_;
     uint64_t slproxytimetick_ = gettickcount();
     int slproxycount_ = 0;
+
+    std::unordered_map<std::string, boost::any> _config;
+    std::unordered_map<std::string, std::string> _types;
+
 };
 
 }  // namespace app

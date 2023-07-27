@@ -14,6 +14,7 @@
 #include "mars/comm/dns/dns.h"
 #include "mars/comm/xlogger/xlogger.h"
 
+
 using namespace mars::comm;
 using namespace mars::boot;
 
@@ -166,6 +167,34 @@ void AppManager::ClearProxyInfo() {
     proxy_info_.type = mars::comm::kProxyNone;
 }
 // #endif
+
+
+//template <typename T>
+//T AppManager::GetConfig(const std::string& key, T default_value) {
+//    auto it = _config.find(key);
+//    if (it == _config.end() && _types.at(key) != typeid(T).name()) {
+//        return default_value;
+//    }
+//    return boost::any_cast<T>(it->second);
+//}
+//
+//template <typename T>
+//void AppManager::SetConfig(const std::string& key, T value) {
+//    xinfo2(TSF "SetConfig key:%_, value:%_", key, value);
+//    _config[key] = value;
+//    _types[key] = typeid(T).name();
+//#ifdef ANDROID
+//    if (key == kKeyAlarmStartWakeupLook) {
+//        if (std::is_convertible<T, int>::value) {
+//            //                comm::Alarm::SetStartAlarmWakeLock(static_cast<int>(value));
+//        }
+//    } else if (key == kKeyAlarmOnWakeupLook) {
+//        if (std::is_convertible<T, int>::value) {
+//            // comm::Alarm::SetOnAlarmWakeLock(static_cast<int>(value));
+//        }
+//    }
+//#endif
+//}
 
 }  // namespace app
 }  // namespace mars
