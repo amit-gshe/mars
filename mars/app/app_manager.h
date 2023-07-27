@@ -70,18 +70,10 @@ class AppManager : public mars::boot::BaseManager {
         xinfo2(TSF "AppConfig SetConfig key:%_, value:%_", key, value);
         _config[key] = value;
         _types[key] = typeid(T).name();
-#ifdef ANDROID
-        if (key == kKeyAlarmStartWakeupLook) {
-            if (std::is_convertible<T, int>::value) {
-                comm::Alarm::SetStartAlarmWakeLock(static_cast<int>(value));
-            }
-        } else if (key == kKeyAlarmOnWakeupLook) {
-            if (std::is_convertible<T, int>::value) {
-                comm::Alarm::SetOnAlarmWakeLock(static_cast<int>(value));
-            }
-        }
-#endif
+        CheckCommSetting(key);
     }
+
+    void CheckCommSetting(const std::string& key);
 
  private:
     Callback* callback_;

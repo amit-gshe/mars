@@ -168,33 +168,17 @@ void AppManager::ClearProxyInfo() {
 }
 // #endif
 
-
-//template <typename T>
-//T AppManager::GetConfig(const std::string& key, T default_value) {
-//    auto it = _config.find(key);
-//    if (it == _config.end() && _types.at(key) != typeid(T).name()) {
-//        return default_value;
-//    }
-//    return boost::any_cast<T>(it->second);
-//}
-//
-//template <typename T>
-//void AppManager::SetConfig(const std::string& key, T value) {
-//    xinfo2(TSF "SetConfig key:%_, value:%_", key, value);
-//    _config[key] = value;
-//    _types[key] = typeid(T).name();
-//#ifdef ANDROID
-//    if (key == kKeyAlarmStartWakeupLook) {
-//        if (std::is_convertible<T, int>::value) {
-//            //                comm::Alarm::SetStartAlarmWakeLock(static_cast<int>(value));
-//        }
-//    } else if (key == kKeyAlarmOnWakeupLook) {
-//        if (std::is_convertible<T, int>::value) {
-//            // comm::Alarm::SetOnAlarmWakeLock(static_cast<int>(value));
-//        }
-//    }
-//#endif
-//}
+void AppManager::CheckCommSetting(const std::string& key) {
+#ifdef ANDROID
+    if (key == kKeyAlarmStartWakeupLook) {
+        int wakeup = GetConfig<int>(kKeyAlarmStartWakeupLook, kAlarmStartWakeupLook);
+        comm::Alarm::SetStartAlarmWakeLock(wakeup);
+    } else if (key == kKeyAlarmOnWakeupLook) {
+        int wakeup = GetConfig<int>(kKeyAlarmOnWakeupLook, kAlarmOnWakeupLook);
+        comm::Alarm::SetOnAlarmWakeLock(wakeup);
+    }
+#endif
+}
 
 }  // namespace app
 }  // namespace mars
