@@ -169,6 +169,7 @@ void AppManager::ClearProxyInfo() {
 // #endif
 
 void AppManager::CheckCommSetting(const std::string& key) {
+    xinfo2(TSF "AppConfig CheckCommSetting key:%_", key);
 #ifdef ANDROID
     if (key == kKeyAlarmStartWakeupLook) {
         int wakeup = GetConfig<int>(kKeyAlarmStartWakeupLook, kAlarmStartWakeupLook);

@@ -48,18 +48,13 @@ class AppManager : public mars::boot::BaseManager {
     void ClearProxyInfo();
     //    #endif
 
-//    template <typename T>
-//    T GetConfig(const std::string& key, T default_value) ;
-//
-//    template <typename T>
-//    void SetConfig(const std::string& key, T value);
-
     template <typename T>
     T GetConfig(const std::string& key, T default_value) {
         xinfo2(TSF "AppConfig GetConfig key:%_, default value:%_", key, default_value);
-        auto it = _config.find(key);
-        if (it == _config.end() || _types.at(key) != typeid(T).name()) {
-            xinfo2(TSF"AppConfig GetConfig return default value. ");
+        auto it = config_.find(key);
+        auto it_type = types_.find(key);
+        if (it == config_.end() || it_type == types_.end() || types_.at(key) != std::type_index(typeid(T)).name()) {
+            xwarn2(TSF"AppConfig GetConfig return default value. ");
             return default_value;
         }
         return boost::any_cast<T>(it->second);
@@ -68,8 +63,9 @@ class AppManager : public mars::boot::BaseManager {
     template <typename T>
     void SetConfig(const std::string& key, T value) {
         xinfo2(TSF "AppConfig SetConfig key:%_, value:%_", key, value);
-        _config[key] = value;
-        _types[key] = typeid(T).name();
+        std::unique_lock<std::mutex> lock(mutex_);
+        config_[key] = value;
+        types_[key] = std::type_index(typeid(T)).name();
         CheckCommSetting(key);
     }
 
@@ -84,8 +80,9 @@ class AppManager : public mars::boot::BaseManager {
     uint64_t slproxytimetick_ = gettickcount();
     int slproxycount_ = 0;
 
-    std::unordered_map<std::string, boost::any> _config;
-    std::unordered_map<std::string, std::string> _types;
+    std::mutex mutex_;
+    std::unordered_map<std::string, boost::any> config_;
+    std::unordered_map<std::string, std::string> types_;
 
 };
 
