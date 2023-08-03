@@ -52,8 +52,7 @@ class AppManager : public mars::boot::BaseManager {
     T GetConfig(const std::string& key, T default_value) {
         xinfo2(TSF "AppConfig GetConfig key:%_, default value:%_", key, default_value);
         auto it = config_.find(key);
-        auto it_type = types_.find(key);
-        if (it == config_.end() || it_type == types_.end() || types_.at(key) != std::type_index(typeid(T)).name()) {
+        if (it == config_.end() || types_.at(key).empty() || types_.at(key) != std::type_index(typeid(T)).name()) {
             xwarn2(TSF"AppConfig GetConfig return default value. ");
             return default_value;
         }
