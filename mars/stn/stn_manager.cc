@@ -216,10 +216,10 @@ int StnManager::Buf2Resp(uint32_t taskid,
                          const AutoBuffer& extend,
                          int& error_code,
                          int channel_select,
-                         unsigned short& sequence_id) {
+                         unsigned short& server_sequence_id) {
     xassert2(callback_bridge_ != NULL);
     if (callback_bridge_) {
-        return callback_bridge_->Buf2Resp(taskid, user_context, _user_id, inbuffer, extend, error_code, channel_select, sequence_id);
+        return callback_bridge_->Buf2Resp(taskid, user_context, _user_id, inbuffer, extend, error_code, channel_select, server_sequence_id);
     } else {
         xwarn2(TSF "mars2 callback_bridget is null.");
         return 0;
