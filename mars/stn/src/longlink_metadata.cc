@@ -45,7 +45,6 @@ LongLinkMetaData::LongLinkMetaData(boot::Context* _context, const LonglinkConfig
 
 LongLinkMetaData::~LongLinkMetaData() {
     xinfo_function();
-    
 }
 
 void LongLinkMetaData::__OnTimerCheckSuc(const std::string& _name) {

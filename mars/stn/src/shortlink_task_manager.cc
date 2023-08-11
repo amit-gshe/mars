@@ -168,7 +168,7 @@ void ShortLinkTaskManager::__RunLoop() {
     if (lst_cmd_.empty()) {
 #ifdef ANDROID
         /*cancel the last wakeuplock*/
-        if (context_->GetManager<AppManager>()) {
+        if (context_->GetManager<AppManager>() != NULL ) {
             wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyShortLinkWakeupLockEmptyCMD,
                                                                                   kShortLinkWakeupLockEmptyCMD));
         } else {
@@ -184,7 +184,7 @@ void ShortLinkTaskManager::__RunLoop() {
 
     if (!lst_cmd_.empty()) {
 #ifdef ANDROID
-        if (context_->GetManager<AppManager>()) {
+        if (context_->GetManager<AppManager>() != NULL ) {
             wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyShortLinkWakeupLockRunCMD,
                                                                                   kShortLinkWakeupLockRunCMD));
         } else {
@@ -198,7 +198,7 @@ void ShortLinkTaskManager::__RunLoop() {
     } else {
 #ifdef ANDROID
         /*cancel the last wakeuplock*/
-        if (context_->GetManager<AppManager>()) {
+        if (context_->GetManager<AppManager>() != NULL ) {
             wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyShortLinkWakeupLockEmptyCMD,
                                                                                   kShortLinkWakeupLockEmptyCMD));
         } else {
