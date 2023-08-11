@@ -261,7 +261,7 @@ void LongLinkTaskManager::__RunLoop() {
     if (lst_cmd_.empty()) {
 #ifdef ANDROID
         /*cancel the last wakeuplock*/
-        if (context_->GetManager<AppManager>() != NULL ) {
+        if (context_->GetManager<AppManager>() != nullptr ) {
             wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockEmptyCMD,
                                                                                   kLongLinkWakeupLockEmptyCMD));
         } else {
@@ -277,7 +277,7 @@ void LongLinkTaskManager::__RunLoop() {
 
     if (!lst_cmd_.empty()) {
 #ifdef ANDROID
-        if (context_->GetManager<AppManager>() != NULL ) {
+        if (context_->GetManager<AppManager>() != nullptr ) {
             wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockRunCMD,
                                                                                   kLongLinkWakeupLockRunCMD));
         } else {
@@ -291,7 +291,7 @@ void LongLinkTaskManager::__RunLoop() {
     } else {
 #ifdef ANDROID
         /*cancel the last wakeuplock*/
-        if (context_->GetManager<AppManager>() != NULL ) {
+        if (context_->GetManager<AppManager>() != nullptr ) {
             wakeup_lock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockEmptyCMD,
                                                                                   kLongLinkWakeupLockEmptyCMD));
         } else {

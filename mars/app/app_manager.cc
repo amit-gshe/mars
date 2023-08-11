@@ -14,7 +14,6 @@
 #include "mars/comm/dns/dns.h"
 #include "mars/comm/xlogger/xlogger.h"
 
-
 using namespace mars::comm;
 using namespace mars::boot;
 
@@ -22,10 +21,11 @@ namespace mars {
 namespace app {
 
 AppManager::AppManager(Context* context) : context_(context) {
-    xverbose_function(TSF "mars2 context id %_", context_->GetContextId());
+    xinfo_function(TSF "mars2 context id %_", context_->GetContextId());
 }
 
 AppManager::~AppManager() {
+    xinfo_function();
 }
 
 std::string AppManager::GetName() {
@@ -167,19 +167,6 @@ void AppManager::ClearProxyInfo() {
     proxy_info_.type = mars::comm::kProxyNone;
 }
 // #endif
-
-void AppManager::CheckCommSetting(const std::string& key) {
-    xinfo2(TSF "AppConfig CheckCommSetting key:%_", key);
-#ifdef ANDROID
-    if (key == kKeyAlarmStartWakeupLook) {
-        int wakeup = GetConfig<int>(kKeyAlarmStartWakeupLook, kAlarmStartWakeupLook);
-        comm::Alarm::SetStartAlarmWakeLock(wakeup);
-    } else if (key == kKeyAlarmOnWakeupLook) {
-        int wakeup = GetConfig<int>(kKeyAlarmOnWakeupLook, kAlarmOnWakeupLook);
-        comm::Alarm::SetOnAlarmWakeLock(wakeup);
-    }
-#endif
-}
 
 }  // namespace app
 }  // namespace mars

@@ -8,17 +8,17 @@
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
-#include "mars/boost/any.hpp"
 
 #include "mars/app/app.h"
+#include "mars/boost/any.hpp"
 #include "mars/boot/base_manager.h"
 #include "mars/boot/context.h"
+#include "mars/comm/alarm.h"
 #include "mars/comm/comm_data.h"
 #include "mars/comm/thread/lock.h"
 #include "mars/comm/thread/mutex.h"
 #include "mars/comm/thread/thread.h"
 #include "mars/comm/time_utils.h"
-#include "mars/comm/alarm.h"
 
 namespace mars {
 namespace app {
@@ -67,10 +67,21 @@ class AppManager : public mars::boot::BaseManager {
         std::unique_lock<std::mutex> lock(mutex_);
         config_[key] = value;
         types_[key] = std::type_index(typeid(T)).name();
-        CheckCommSetting(key);
+        __CheckCommSetting(key);
     }
 
-    void CheckCommSetting(const std::string& key);
+    void __CheckCommSetting(const std::string& key) {
+#ifdef ANDROID
+        xinfo2(TSF "AppConfig CheckCommSetting key:%_", key);
+        if (key == kKeyAlarmStartWakeupLook) {
+            int wakeup = GetConfig<int>(kKeyAlarmStartWakeupLook, kAlarmStartWakeupLook);
+            comm::Alarm::SetStartAlarmWakeLock(wakeup);
+        } else if (key == kKeyAlarmOnWakeupLook) {
+            int wakeup = GetConfig<int>(kKeyAlarmOnWakeupLook, kAlarmOnWakeupLook);
+            comm::Alarm::SetOnAlarmWakeLock(wakeup);
+        }
+#endif
+    }
 
  private:
     Callback* callback_;
@@ -84,7 +95,6 @@ class AppManager : public mars::boot::BaseManager {
     std::mutex mutex_;
     std::unordered_map<std::string, boost::any> config_;
     std::unordered_map<std::string, std::string> types_;
-
 };
 
 }  // namespace app

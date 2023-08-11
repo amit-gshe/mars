@@ -325,7 +325,7 @@ bool LongLink::__NoopReq(XLogger& _log, Alarm& _alarm, bool need_active_timeout)
         _alarm.Cancel();
         _alarm.Start(need_active_timeout ? (5* 1000) : (8 * 1000));
 #ifdef ANDROID
-        if (context_->GetManager<AppManager>() != NULL ) {
+        if (context_->GetManager<AppManager>() != nullptr ) {
             wakelock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockNoopReq,kLongLinkWakeupLockNoopReq));
         } else {
             xinfo2(TSF "appmanager no exist.");
@@ -363,7 +363,7 @@ bool LongLink::__NoopResp(uint32_t _cmdid, uint32_t _taskid, AutoBuffer& _buf, A
         __NotifySmartHeartbeatHeartResult(true, false, _profile);
         xinfo2(TSF"noop succ, interval:%_", lastheartbeat_);
 #ifdef ANDROID
-        if (context_->GetManager<AppManager>() != NULL ) {
+        if (context_->GetManager<AppManager>() != nullptr ) {
             wakelock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockNoopResp,kLongLinkWakeupLockNoopResp));
         } else {
             xinfo2(TSF "appmanager no exist.");
@@ -416,7 +416,7 @@ void LongLink::__OnAlarm(bool _noop_timeout) {
         OnNoopAlarmReceived(_noop_timeout);
     }
 #ifdef ANDROID
-    if (context_->GetManager<AppManager>() != NULL ) {
+    if (context_->GetManager<AppManager>() != nullptr ) {
         wakelock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockOnAlarm,kLongLinkWakeupLockOnAlarm));
     } else {
         xinfo2(TSF "appmanager no exist.");
@@ -444,7 +444,7 @@ void LongLink::__Run() {
     __UpdateProfile(conn_profile);
     
 #ifdef ANDROID
-    if (context_->GetManager<AppManager>() != NULL ) {
+    if (context_->GetManager<AppManager>() != nullptr ) {
         wakelock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockBeforeConnection,kLongLinkWakeupLockBeforeConnection));
     } else {
         xinfo2(TSF "appmanager no exist.");
@@ -453,7 +453,7 @@ void LongLink::__Run() {
 #endif
     SOCKET sock = __RunConnect(conn_profile);
 #ifdef ANDROID
-    if (context_->GetManager<AppManager>() != NULL ) {
+    if (context_->GetManager<AppManager>() != nullptr ) {
         wakelock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockAfterConnection,
                                                                            kLongLinkWakeupLockAfterConnection));
     } else {
@@ -491,7 +491,7 @@ void LongLink::__Run() {
     if (kEctOK != errtype) __RunResponseError(errtype, errcode, conn_profile);
     
 #ifdef ANDROID
-    if (context_->GetManager<AppManager>() != NULL ) {
+    if (context_->GetManager<AppManager>() != nullptr ) {
         wakelock_->Lock(context_->GetManager<AppManager>()->GetConfig<int>(kKeyLongLinkWakeupLockAfterReadWrite,
                                                                            kLongLinkWakeupLockAfterReadWrite));
     } else {
