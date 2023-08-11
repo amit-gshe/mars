@@ -51,6 +51,7 @@ class AppManager : public mars::boot::BaseManager {
     template <typename T>
     T GetConfig(const std::string& key, T default_value) {
         xinfo2(TSF "AppConfig GetConfig key:%_, default value:%_", key, default_value);
+        std::unique_lock<std::mutex> lock(mutex_);
         auto it = config_.find(key);
         auto type_it = types_.find(key);
         if (it == config_.end() || type_it == types_.end() || types_.at(key).empty()
@@ -67,6 +68,7 @@ class AppManager : public mars::boot::BaseManager {
         std::unique_lock<std::mutex> lock(mutex_);
         config_[key] = value;
         types_[key] = std::type_index(typeid(T)).name();
+        lock.unlock();
         __CheckCommSetting(key);
     }
 
