@@ -136,7 +136,7 @@ def gen_ios_project():
 
 
     print('==================Output========================')
-    print('project file: %s/%s' %(SCRIPT_PATH, BUILD_OUT_PATH))
+    print(('project file: %s/%s' %(SCRIPT_PATH, BUILD_OUT_PATH)))
     
     return True
 
@@ -146,7 +146,7 @@ def main():
             build_ios(sys.argv[1])
             break
         else:
-            num = input('Enter menu:\n1. Clean && build mars.\n2. Clean && build xlog.\n3. Gen iOS mars Project.\n4. Exit\n')
+            num = eval(input('Enter menu:\n1. Clean && build mars.\n2. Clean && build xlog.\n3. Gen iOS mars Project.\n4. Exit\n'))
             if num == '1':
                 build_ios()
                 break
@@ -164,3 +164,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

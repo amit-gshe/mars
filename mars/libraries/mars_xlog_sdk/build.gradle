@@ -1,10 +1,30 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
-apply from: rootProject.file('gradle/WeChatPublish.gradle')
+// apply from: rootProject.file('gradle/WeChatPublish.gradle')
 
-group PROJ_GROUP
-version PROJ_VERSION
-artifactId = PROJ_ARTIFACTID
+// group PROJ_GROUP
+// version PROJ_VERSION
+// artifactId = PROJ_ARTIFACTID
+// plugins {
+//     id 'maven-publish'
+// }
+publishing {
+  publications {
+    release(MavenPublication) {
+      groupId = 'com.tencent.mars'
+      artifactId = 'mars-xlog'
+      version = '1.2.7'
+
+      afterEvaluate {
+        from components.release
+      }
+    }
+  }
+  repositories {
+        mavenLocal()
+    }
+}
 
 android {
     compileSdkVersion 31
@@ -17,6 +37,9 @@ android {
             moduleName = "mmnet"
             abiFilter "armeabi"
             abiFilter "armeabi-v7a"
+            abiFilter "arm64-v8a"
+            abiFilter "x86"
+            abiFilter "x86_64"
         }
     }
     sourceSets {

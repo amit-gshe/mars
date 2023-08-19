@@ -70,7 +70,7 @@ def get_android_strip_cmd(arch):
         pass
 
     strip_cmd = ANDROID_STRIP_FILE[arch] %(system_str)
-    print('Android strip cmd:%s' %(strip_cmd))
+    print(('Android strip cmd:%s' %(strip_cmd)))
     return strip_cmd
 
 
@@ -82,7 +82,7 @@ def build_android(incremental, arch, target_option=''):
     os.chdir(BUILD_OUT_PATH)
     
     build_cmd = ANDROID_BUILD_CMD %(SCRIPT_PATH, ANDROID_GENERATOR, arch, NDK_ROOT, NDK_ROOT, target_option)
-    print("build cmd:" + build_cmd)
+    print(("build cmd:" + build_cmd))
     ret = os.system(build_cmd)
     os.chdir(SCRIPT_PATH)
 
@@ -132,13 +132,13 @@ def build_android(incremental, arch, target_option=''):
         os.system('%s %s' %(strip_cmd, f))
 
     print('==================Output========================')
-    print('libs(release): %s' %(lib_path))
-    print('symbols(must store permanently): %s' %(symbol_path))
+    print(('libs(release): %s' %(lib_path)))
+    print(('symbols(must store permanently): %s' %(symbol_path)))
 
 
     after_time = time.time()
 
-    print("use time:%d s" % (int(after_time - before_time)))
+    print(("use time:%d s" % (int(after_time - before_time))))
     return True
 
 def main(incremental, archs, target_option='', tag=''):
@@ -165,8 +165,8 @@ if __name__ == '__main__':
             main(False, archs, tag=sys.argv[1])
             break
         else:
-            archs = {'armeabi-v7a', 'arm64-v8a'}
-            num = raw_input('Enter menu:\n1. Clean && build mars.\n2. Build incrementally mars.\n3. Clean && build xlog.\n4. Exit\n')
+            archs = {'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'}
+            num = input('Enter menu:\n1. Clean && build mars.\n2. Build incrementally mars.\n3. Clean && build xlog.\n4. Exit\n')
             if num == '1':
                 main(False, archs)
                 break
@@ -181,5 +181,3 @@ if __name__ == '__main__':
             else:
                 main(False, archs)
                 break
-
-
