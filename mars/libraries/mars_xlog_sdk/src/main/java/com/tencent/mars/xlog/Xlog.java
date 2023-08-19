@@ -160,7 +160,7 @@ public class Xlog implements Log.LogImp {
 	@Override
 	public native void setConsoleLogOpen(long logInstancePtr, boolean isOpen);	//set whether the console prints log
 
-	private static native void appenderOpen(XLogConfig logConfig);
+	public static native void appenderOpen(XLogConfig logConfig);
 
 	@Override
 	public native void appenderClose();
